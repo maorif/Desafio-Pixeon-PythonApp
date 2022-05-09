@@ -3,9 +3,9 @@ version: "3"
 services:
   app:
     build: .
-    command: uvicorn main:app --host=0.0.0.0 --reload
+    command: uvicorn main:app --host=0.0.0.0 --reload --port=8000
     ports:
-      - "8080:8080"
+      - "8000:8000"
     volumes:
       - .:/app
     networks:
