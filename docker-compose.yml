@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    command: uvicorn main:app --host=0.0.0.0 --reload
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    networks:
+      - postgres-network
+    
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_USER: postgres
+      POSTGRES_DB: fastAPI_app_db
+    ports:
+      - "1234:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - postgres-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@meusite.com.br"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres
+    networks:
+      - postgres-network
+
+networks:
+  postgres-network:
+    driver: bridge
